@@ -21,15 +21,21 @@ module Spree
 
         config_hash = {}
         yaml_config.each do |config_key, config_values|
-          config_object = if is_model
-             config_values.delete(MODEL_CLASS_KEY).constantize.find(config_values.delete(MODEL_ID_KEY))
-          else
-            config_values.delete(CONFIG_CLASS_KEY).constantize.new
-          end
+          begin
+            config_object = if is_model
+               config_values.delete(MODEL_CLASS_KEY).constantize.find(config_values.delete(MODEL_ID_KEY))
+            else
+              config_values.delete(CONFIG_CLASS_KEY).constantize.new
+            end
 
-          config_values.each do |key, value|
-            cache_key = config_object.preference_cache_key(key)
-            config_hash[cache_key] = value
+            config_values.each do |key, value|
+              cache_key = config_object.preference_cache_key(key)
+              config_hash[cache_key] = value
+            end
+          rescue ActiveRecord::RecordNotFound => e
+            raise e unless Rails.env.ci? || Rails.env.test? || Rails.env.development?
+            puts "**** WARNING **** Spree::ConfigPreferenceLoader unable to load record from database"
+            puts e.message
           end
         end
 
