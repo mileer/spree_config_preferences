@@ -32,7 +32,7 @@ module Spree
               cache_key = config_object.preference_cache_key(key)
               config_hash[cache_key] = value
             end
-          rescue ActiveRecord::RecordNotFound => e
+          rescue ActiveRecord::StatementInvalid, ActiveRecord::RecordNotFound => e
             raise e unless Rails.env.ci? || Rails.env.test? || Rails.env.development?
             puts "**** WARNING **** Spree::ConfigPreferenceLoader unable to load record from database"
             puts e.message
