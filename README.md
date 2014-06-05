@@ -21,7 +21,11 @@ bundle exec rails g spree_config_preferences:install
 
 Replace reference to `Spree::Preferences::Store.instance` in [Spree](https://github.com/spree/spree/blob/2-2-stable/core/app/models/spree/preferences/preferable.rb#L137) to `Spree::Preferences::InMemoryStore.instance`.
 
-To load the configuration settings into the InMemoryStore instance, call `Spree::ConfigPreferenceLoader.load([full_path_to_yaml_file])` or `Spree::ConfigPreferenceLoader.load_model_preferences([full_path_to_yaml_file])` in `config/spree/application.rb`.
+To load the configuration settings into the InMemoryStore instance, define the configuration files you wish to load in `application.rb`.
+```ruby
+config.spree_config_preferences_preference_files = [ABSOLUTE_FILEPATH, SECOND_ABSOLUTE_FILEPATH]
+config.spree_config_preferences_model_preference_files = [ABSOLUTE_FILEPATH, SECOND_ABSOLUTE_FILEPATH]
+```
 
 Testing
 -------
