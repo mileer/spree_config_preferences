@@ -17,7 +17,7 @@ module Spree
       private
 
       def load_configurations(file, is_model = false)
-        yaml_config = YAML.load_file(file)[Rails.env]
+        yaml_config = YAML.load_file(file)[Rails.env] || {}
 
         config_hash = {}
         yaml_config.each do |config_key, config_values|
