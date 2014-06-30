@@ -25,6 +25,7 @@ To load the configuration settings into the InMemoryStore instance, define the c
 ```ruby
 config.spree_config_preferences_preference_files = [ABSOLUTE_FILEPATH, SECOND_ABSOLUTE_FILEPATH]
 config.spree_config_preferences_model_preference_files = [ABSOLUTE_FILEPATH, SECOND_ABSOLUTE_FILEPATH]
+config.spree_config_preferences_environment_agnostic_preference_files = [ABSOLUTE_FILEPATH, SECOND_ABSOLUTE_FILEPATH]
 ```
 
 Testing

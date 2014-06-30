@@ -11,6 +11,9 @@ module SpreeConfigPreferences
       app.config.spree_config_preferences_model_preference_files.each do |pref_file|
         Spree::ConfigPreferenceLoader.load_model_preferences(pref_file)
       end
+      app.config.spree_config_preferences_environment_agnostic_preference_files.each do |pref_file|
+        Spree::ConfigPreferenceLoader.load_environment_agnostic_preferences(pref_file)
+      end
     end
 
     # use rspec for tests

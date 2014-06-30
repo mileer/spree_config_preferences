@@ -11,13 +11,18 @@ module Spree
       end
 
       def load_model_preferences(file)
-        load_configurations(file, true)
+        load_configurations(file, true, false)
+      end
+
+      def load_environment_agnostic_preferences(file)
+        load_configurations(file, false, true)
       end
 
       private
 
-      def load_configurations(file, is_model = false)
-        yaml_config = YAML.load_file(file)[Rails.env] || {}
+      def load_configurations(file, is_model = false, is_environment_agnostic = false)
+        yaml_config = YAML.load_file(file) || {}
+        yaml_config = yaml_config[Rails.env] || {} unless is_environment_agnostic
 
         config_hash = {}
         yaml_config.each do |config_key, config_values|
