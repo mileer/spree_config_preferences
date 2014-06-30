@@ -103,7 +103,7 @@ describe Spree::Preferences::InMemoryStore do
 
     context "config file doesn't contain key" do
       it "returns false" do
-        subject.exist?(configuration_key).should be_false
+        subject.exist?("unknown_key").should be_false
       end
     end
   end

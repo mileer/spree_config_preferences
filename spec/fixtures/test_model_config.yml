@@ -1,0 +1,8 @@
+test: &default
+  test_configuration:
+    id:                55
+    model_class:       'TestConfiguration'
+    string_preference: 'loaded from fixture'
+
+production:
+  <<: *default

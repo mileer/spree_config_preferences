@@ -1,0 +1,4 @@
+test:
+  test_configuration:
+    config_class:      'TestConfiguration'
+    string_preference: 'loaded from fixture'
