@@ -5,14 +5,22 @@ module SpreeConfigPreferences
     engine_name 'spree_config_preferences'
 
     initializer "spree.config_preferences", :before => "spree.environment" do |app|
-      app.config.spree_config_preferences_preference_files.each do |pref_file|
-        Spree::ConfigPreferenceLoader.load(pref_file)
+      if app.config.respond_to? :spree_config_preferences_preference_files
+        app.config.spree_config_preferences_preference_files.each do |pref_file|
+          Spree::ConfigPreferenceLoader.load(pref_file)
+        end
       end
-      app.config.spree_config_preferences_model_preference_files.each do |pref_file|
-        Spree::ConfigPreferenceLoader.load_model_preferences(pref_file)
+
+      if app.config.respond_to? :spree_config_preferences_model_preference_files
+        app.config.spree_config_preferences_model_preference_files.each do |pref_file|
+          Spree::ConfigPreferenceLoader.load_model_preferences(pref_file)
+        end
       end
-      app.config.spree_config_preferences_environment_agnostic_preference_files.each do |pref_file|
-        Spree::ConfigPreferenceLoader.load_environment_agnostic_preferences(pref_file)
+
+      if app.config.respond_to? :spree_config_preferences_environment_agnostic_preference_files
+        app.config.spree_config_preferences_environment_agnostic_preference_files.each do |pref_file|
+          Spree::ConfigPreferenceLoader.load_environment_agnostic_preferences(pref_file)
+        end
       end
     end
 
