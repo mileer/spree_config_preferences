@@ -4,26 +4,6 @@ module SpreeConfigPreferences
     isolate_namespace Spree
     engine_name 'spree_config_preferences'
 
-    initializer "spree.config_preferences", :before => "spree.environment" do |app|
-      if app.config.respond_to? :spree_config_preferences_preference_files
-        app.config.spree_config_preferences_preference_files.each do |pref_file|
-          Spree::ConfigPreferenceLoader.load(pref_file)
-        end
-      end
-
-      if app.config.respond_to? :spree_config_preferences_model_preference_files
-        app.config.spree_config_preferences_model_preference_files.each do |pref_file|
-          Spree::ConfigPreferenceLoader.load_model_preferences(pref_file)
-        end
-      end
-
-      if app.config.respond_to? :spree_config_preferences_environment_agnostic_preference_files
-        app.config.spree_config_preferences_environment_agnostic_preference_files.each do |pref_file|
-          Spree::ConfigPreferenceLoader.load_environment_agnostic_preferences(pref_file)
-        end
-      end
-    end
-
     # use rspec for tests
     config.generators do |g|
       g.test_framework :rspec
@@ -32,6 +12,24 @@ module SpreeConfigPreferences
     def self.activate
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*_decorator*.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      if Rails.configuration.respond_to? :spree_config_preferences_preference_files
+        Rails.configuration.spree_config_preferences_preference_files.each do |pref_file|
+          Spree::ConfigPreferenceLoader.load(pref_file)
+        end
+      end
+
+      if Rails.configuration.respond_to? :spree_config_preferences_model_preference_files
+        Rails.configuration.spree_config_preferences_model_preference_files.each do |pref_file|
+          Spree::ConfigPreferenceLoader.load_model_preferences(pref_file)
+        end
+      end
+
+      if Rails.configuration.respond_to? :spree_config_preferences_environment_agnostic_preference_files
+        Rails.configuration.spree_config_preferences_environment_agnostic_preference_files.each do |pref_file|
+          Spree::ConfigPreferenceLoader.load_environment_agnostic_preferences(pref_file)
+        end
       end
     end
 
