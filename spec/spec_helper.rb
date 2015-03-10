@@ -32,7 +32,11 @@ require 'spree/testing_support/url_helpers'
 # Requires factories defined in lib/spree_config_preferences/factories.rb
 require 'spree_config_preferences/factories'
 
+require 'pry'
+
 RSpec.configure do |config|
+  config.expose_current_running_example_as :example
+  config.infer_spec_type_from_file_location!
   config.include FactoryGirl::Syntax::Methods
 
   # == URL Helpers
@@ -69,6 +73,7 @@ RSpec.configure do |config|
 
   # Before each spec check if it is a Javascript test and switch between using database transactions or not where necessary.
   config.before :each do
+    Rails.cache.clear
     DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
     DatabaseCleaner.start
   end

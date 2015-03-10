@@ -20,18 +20,18 @@ describe Spree::Preferences::InMemoryStore do
       context "the value is falsy" do
         before do
           subject.add_config_values!(YAML.load_file(config_file))
-          Spree::Preference.create!(key: falsy_configuration_key, value: configuration_value, value_type: "string")
+          Spree::Preference.create!(key: falsy_configuration_key, value: configuration_value)
         end
 
         it "uses the default Spree preference lookup" do
-          subject.get(falsy_configuration_key).should be_false
+          subject.get(falsy_configuration_key).should be_falsey
         end
       end
 
       context "the value is not falsy" do
         before do
           subject.add_config_values!(YAML.load_file(config_file))
-          Spree::Preference.create!(key: configuration_key, value: configuration_value, value_type: "string")
+          Spree::Preference.create!(key: configuration_key, value: configuration_value)
         end
 
         it "returns the value for the key that was loaded from the config file" do
@@ -44,7 +44,7 @@ describe Spree::Preferences::InMemoryStore do
       let(:configuration_value) { "database value" }
 
       before do
-        Spree::Preference.create!(key: configuration_key, value: configuration_value, value_type: "string")
+        Spree::Preference.create!(key: configuration_key, value: configuration_value)
       end
 
       it "uses the default Spree preference lookup" do
@@ -65,13 +65,13 @@ describe Spree::Preferences::InMemoryStore do
       end
 
       it "does not change the value in memory" do
-        subject.set(configuration_key, new_configuration_value, configuration_type)
+        subject.set(configuration_key, new_configuration_value)
         subject.get(configuration_key).should eq configuration_value
       end
 
       it "does not save the value in the database" do
         expect do
-          subject.set(configuration_key, new_configuration_value, configuration_type)
+          subject.set(configuration_key, new_configuration_value)
         end.to_not change(Spree::Preference, :count)
       end
     end
@@ -81,7 +81,7 @@ describe Spree::Preferences::InMemoryStore do
 
       it "uses the default Spree preference set" do
         expect do
-          subject.set(configuration_key, configuration_value, configuration_type)
+          subject.set(configuration_key, configuration_value)
         end.to change(Spree::Preference, :count).by(1)
 
         subject.get(configuration_key).should eq configuration_value
@@ -97,13 +97,13 @@ describe Spree::Preferences::InMemoryStore do
       end
 
       it "returns true" do
-        subject.exist?(configuration_key).should be_true
+        subject.exist?(configuration_key).should be_truthy
       end
     end
 
     context "config file doesn't contain key" do
       it "returns false" do
-        subject.exist?("unknown_key").should be_false
+        subject.exist?("unknown_key").should be_falsey
       end
     end
   end
@@ -116,7 +116,7 @@ describe Spree::Preferences::InMemoryStore do
 
       it "doesn't delete the entry in the config_hash" do
         subject.delete(configuration_key)
-        subject.exist?(configuration_key).should be_true
+        subject.exist?(configuration_key).should be_truthy
       end
     end
 

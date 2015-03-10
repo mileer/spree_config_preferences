@@ -8,13 +8,13 @@ module Spree::Preferences
       exists_in_config?(key) || super(key)
     end
 
-    def get(key, fallback=nil)
-      exists_in_config?(key) ? config[key] : super(key, fallback)
+    def get(key)
+      exists_in_config?(key) ? config[key] : super(key) { }
     end
 
-    def set(key, value, type)
+    def set(key, value)
       return if exists_in_config?(key)
-      super(key, value, type)
+      super(key, value)
     end
 
     def delete(key)
