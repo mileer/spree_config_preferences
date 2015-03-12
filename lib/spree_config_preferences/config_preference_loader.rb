@@ -34,7 +34,7 @@ module Spree
             end
 
             config_values.each do |key, value|
-              cache_key = config_object.set_preference(key, value)
+              # cache_key = config_object.set_preference(key, value)
               config_hash[cache_key] = value
             end
           rescue StandardError => e
